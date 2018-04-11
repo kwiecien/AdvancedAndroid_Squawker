@@ -1,18 +1,18 @@
 /*
-* Copyright (C) 2017 The Android Open Source Project
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*  	http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright (C) 2017 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package android.example.com.squawker;
 
@@ -35,15 +35,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
-
-    private static String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final int LOADER_ID_MESSAGES = 0;
-
-    RecyclerView mRecyclerView;
-    LinearLayoutManager mLayoutManager;
-    SquawkAdapter mAdapter;
 
     static final String[] MESSAGES_PROJECTION = {
             SquawkContract.COLUMN_AUTHOR,
@@ -51,12 +46,15 @@ public class MainActivity extends AppCompatActivity implements
             SquawkContract.COLUMN_DATE,
             SquawkContract.COLUMN_AUTHOR_KEY
     };
-
     static final int COL_NUM_AUTHOR = 0;
     static final int COL_NUM_MESSAGE = 1;
     static final int COL_NUM_DATE = 2;
     static final int COL_NUM_AUTHOR_KEY = 3;
-
+    private static final int LOADER_ID_MESSAGES = 0;
+    private static String LOG_TAG = MainActivity.class.getSimpleName();
+    RecyclerView mRecyclerView;
+    LinearLayoutManager mLayoutManager;
+    SquawkAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,14 +93,9 @@ public class MainActivity extends AppCompatActivity implements
             Log.d(LOG_TAG, "Contains: " + extras.getString("test"));
         }
 
-        // TODO (1) Make a new package for your FCM service classes called "fcm"
-            // TODO (2) Create a new Service class that extends FirebaseInstanceIdService.
-            // You'll need to implement the onTokenRefresh method. Simply have it print out
-            // the new token.
-        // TODO (3) Here, in MainActivity, get a token using FirebaseInstanceId.getInstance().getToken()
-        // TODO (4) Get the message from that token and print it in a log statement
-
-
+        String token = FirebaseInstanceId.getInstance().getToken();
+        String msg = getString(R.string.message_token_format, token);
+        Log.d(LOG_TAG, msg);
     }
 
     @Override
