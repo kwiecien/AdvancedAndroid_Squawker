@@ -1,18 +1,18 @@
 /*
-* Copyright (C) 2017 The Android Open Source Project
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*  	http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright (C) 2017 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package android.example.com.squawker;
 
@@ -35,17 +35,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
-
-    private static String LOG_TAG = MainActivity.class.getSimpleName();
-    private static final int LOADER_ID_MESSAGES = 0;
-
-    RecyclerView mRecyclerView;
-    LinearLayoutManager mLayoutManager;
-    SquawkAdapter mAdapter;
 
     static final String[] MESSAGES_PROJECTION = {
             SquawkContract.COLUMN_AUTHOR,
@@ -53,12 +44,15 @@ public class MainActivity extends AppCompatActivity implements
             SquawkContract.COLUMN_DATE,
             SquawkContract.COLUMN_AUTHOR_KEY
     };
-
     static final int COL_NUM_AUTHOR = 0;
     static final int COL_NUM_MESSAGE = 1;
     static final int COL_NUM_DATE = 2;
     static final int COL_NUM_AUTHOR_KEY = 3;
-
+    private static final int LOADER_ID_MESSAGES = 0;
+    private static String LOG_TAG = MainActivity.class.getSimpleName();
+    RecyclerView mRecyclerView;
+    LinearLayoutManager mLayoutManager;
+    SquawkAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,44 +81,6 @@ public class MainActivity extends AppCompatActivity implements
 
         // Start the loader
         getSupportLoaderManager().initLoader(LOADER_ID_MESSAGES, null, this);
-
-
-        // TODO (1) Make a new Service in the fcm package that extends from FirebaseMessagingService.
-            // TODO (2) As part of the new Service - Override onMessageReceived. This method will
-            // be triggered whenever a squawk is received. You can get the data from the squawk
-            // message using getData(). When you send a test message, this data will include the
-            // following key/value pairs:
-                // test: true
-                // author: Ex. "TestAccount"
-                // authorKey: Ex. "key_test"
-                // message: Ex. "Hello world"
-                // date: Ex. 1484358455343
-            // TODO (3) As part of the new Service - If there is message data, get the data using
-            // the keys and do two things with it :
-                // 1. Display a notification with the first 30 character of the message
-                // 2. Use the content provider to insert a new message into the local database
-                // Hint: You shouldn't be doing content provider operations on the main thread.
-                // If you don't know how to make notifications or interact with a content provider
-                // look at the notes in the classroom for help.
-
-
-        // TODO (5) You can delete the code below for getting the extras from a notification message,
-        // since this was for testing purposes and not part of Squawker.
-        
-        // Gets the extra data from the intent that started the activity. For *notification*
-        // messages, this will contain key value pairs stored in the *data* section of the message.
-        Bundle extras = getIntent().getExtras();
-        // Checks if the extras exist and if the key "test" from our FCM message is in the intent
-        if (extras != null && extras.containsKey("test")) {
-            // If the key is there, print out the value of "test"
-            Log.d(LOG_TAG, "Contains: " + extras.getString("test"));
-        }
-
-
-        // Get token from the ID Service you created and show it in a log
-        String token = FirebaseInstanceId.getInstance().getToken();
-        String msg = getString(R.string.message_token_format, token);
-        Log.d(LOG_TAG, msg);
 
     }
 
